@@ -54,16 +54,12 @@ def enlarge(matrix):
 def expand(matrix):
         '''
         Expands given matrix 4 quadrents
-
         Parameters
         ------
-
         matrix: numpy.array
             3D Matrix should represent reciprocal lattice
-
         Return
         ------
-
             Expanded matrix
         '''
         lenx = matrix.shape[0]
@@ -88,19 +84,14 @@ def expand(matrix):
 def brillouin_zone(matrix, basis):
         '''
         Transforms reciprocal lattice to brillouin zone
-
         Parameters
         ------
-
         matrix: numpy.array
             3D Matrix should represent reciprocal lattice
-
         basis:
             Reciprocal basis vectors
-
         Return
         ------
-
             Matrix representing the brillouin zone
         '''
         base_x = basis[0]
@@ -188,14 +179,12 @@ def convert_fermi_volumes(band, basis, fermi_energy):
 def fermi_parser(hdf_file_path, vasp_dir_path):
     """
     Reads OUTCAR and EIGNVAL to create datastructure for visualization of fermi surfaces
-
     Parameters
     ----------
     hdf_file_path: str
         Path where hdf file will be written to
     vasp_dir_path: str
         Path of direcotry containing OUTCAR and EIGENVAL files
-
     Returns
     -------
     None
@@ -244,44 +233,7 @@ def fermi_parser(hdf_file_path, vasp_dir_path):
         evalues = np.zeros(shape=(nkpoints, nbands, nspin), dtype=np.float32)
 
         kpoint_index = 0
-            # kpoint
-            if len(regex) == 4:
-                kpoints[kpoint_index, :] = [float(v) for v in regex]
-                kpoint_index += 1
-
-            # eigenvalue
-            elif len(regex) > 0:
-                band_index = int(regex[0])
-                values = [float(v) for v in regex[1:1+nspin:]]
-                evalues[kpoint_index - 1, band_index - 1, :] = values
-
-    # derive dimensions from unique kpoints
-    nkpoints_x = len(set(kpoints[:, 0]))
-    nkpoints_y = len(set(kpoints[:, 1]))
-    nkpoints_z = len(set(kpoints[:, 2]))
-
-    # Write data to HDF5
-    # ------------------
-    hdf_file = h5py.File(hdf_file_path, 'a')
-    hdf_file.create_dataset('fermi_energy', data=np.array(fermi_energy))
-    hdf_file.create_dataset('reciprocal_basis', data=basis)
-
-    hdf_group = hdf_file.create_group('fermi_bands')
-    for band_index in range(nbands):
-        band = np.reshape(evalues[:, band_index, 0], (nkpoints_x, nkpoints_y, nkpoints_z))
-
-        hdf_subgroup = hdf_group.create_group(str(band_index))
-        hdf_subgroup.create_dataset('composition', data=band, dtype='float32')
-
-        volumes = convert_fermi_volumes(band, basis, fermi_energy)
-        hdf_subgroup.create_dataset('fermi_volume', data=volumes[0], dtype=np.float32)
-        hdf_subgroup.create_dataset('brillouin_zone', data=volumes[1], dtype=np.float32)
-        hdf_subgroup.create_dataset('expanded_volume', data=volumes[2], dtype=np.float32)
-        hdf_subgroup.create_dataset('normalized_fermi_energy', data=np.array(volumes[3]), dtype=np.float32)
-
-    hdf_file.close()
-
-    return True    for i, line in enumerate(lines[7:]):
+        for i, line in enumerate(lines[7:]):
             regex = re.findall(r'[-\d.E+]+', line)
 
             # kpoint
