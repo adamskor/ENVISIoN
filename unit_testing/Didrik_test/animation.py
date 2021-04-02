@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.expanduser(path_to_current_folder+'/..'))
 import re
 import numpy as np
 import h5py
-#from h5writer import _write_basis, _write_scaling_factor, _write_coordinates, _write_forces
+from h5writer import _write_basis, _write_scaling_factor, _write_coordinates, _write_forces
 from pathlib import Path
 # Define coordinates regex.
 coordinates_re = re.compile(r' +'.join([r'([+-]?[0-9]+\.[0-9]+)'] * 3))
@@ -33,7 +33,9 @@ def mol_dynamic_parser(hdf_file_path, vasp_dir_path):
                 line_list = new_line_list
                 if line_list[2] == "0":
                     md_ok = True
-    print(md_ok)
+
+    if md_ok is True:
+        print("Detta verkar fungera!")
 
 
 
