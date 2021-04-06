@@ -78,7 +78,9 @@ def mol_dynamic_parser(hdf5_file_path, vasp_dir_path, elements=None):
     has_md_ok = False
     time_step = 0
     outcar_file_path = Path(vasp_dir_path).joinpath('OUTCAR')
-    xdatcar_file_path = Path(vasp_dir_path).joinpath('XDATCAR')
+    #xdatcar_file_path = Path(vasp_dir_path).joinpath('XDATCAR')
+#testar enbart med dena xdatcar fil... hör ej ihop med outcar.
+    xdatcar_file_path = Path("Molekyldynamik/").joinpath('XDATCAR')
     poscar_file_path = Path(vasp_dir_path).joinpath('POSCAR')
 
     if not outcar_file_path.exists() or not xdatcar_file_path.exists()or not poscar_file_path.exists():
@@ -101,7 +103,8 @@ def mol_dynamic_parser(hdf5_file_path, vasp_dir_path, elements=None):
                     if line_list_NSW[x] != "":
                         new_line_list_NSW.append(line_list_NSW[x])
                 line_list_NSW = new_line_list_NSW
-        if line_list_IBRION[2] == "0":
+        #ska egentligen kolla om "0", "-1" vid nuvarande test ÄNDRAS DÅ VASP-filer redo!!!!!!!!!!!!!.
+        if line_list_IBRION[2] == "-1":
             has_md_ok = True
         time_steps = int(line_list_NSW[2])
         f.close()
@@ -110,6 +113,10 @@ def mol_dynamic_parser(hdf5_file_path, vasp_dir_path, elements=None):
         with poscar_file_path.open("r") as f:
             elements, atoms = _find_elements(f, elements, vasp_dir_path)
             f.close()
+
+        atoms = [54] # enbart för test med temporär xdatcar
+        time_steps = 2477 # enbart för test med temporär xdatcar
+        elements = ["Fe"]
 
         with xdatcar_file_path.open('r') as f:
             lines = f.readlines()
@@ -121,3 +128,9 @@ def mol_dynamic_parser(hdf5_file_path, vasp_dir_path, elements=None):
                 _write_md(hdf5_file_path, atoms, coordinates_list, elements, time_step)
                 time_step += 1
         f.close()
+
+
+
+
+
+mol_dynamic_parser("test.hdf5","CuFeS2_band_CBT2/")
