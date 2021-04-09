@@ -79,12 +79,8 @@ class EnvisionMain():
             "Density of states": envisionpy.hdf5parser.dos,
             "fermisurface": envisionpy.hdf5parser.fermi_parser,
             "Fermi surface": envisionpy.hdf5parser.fermi_parser,
-<<<<<<< HEAD
-            "force": envisionpy.hdf5parser.force_parser
-=======
             "Force": envisionpy.hdf5parser.force_parser,
             "Molecular dynamics": envisionpy.hdf5parser.mol_dynamic_parser
->>>>>>> 3621c5eacf78ee6b8d3d4bf00ee02604f6c4b876
         }
 
     def update(self):
@@ -148,12 +144,8 @@ class EnvisionMain():
                 "Pair correlation function",
                 "Density of states",
                 "Fermi surface",
-<<<<<<< HEAD
-                "Force vectors"]
-=======
-                "Force"
+                "Force vectors"
                 "Molecular dynamics"]
->>>>>>> 3621c5eacf78ee6b8d3d4bf00ee02604f6c4b876
 
         parse_statuses = {}
         for parse_type in parse_types:
