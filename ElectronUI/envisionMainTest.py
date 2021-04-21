@@ -17,8 +17,11 @@ def send_request(rtype, data):
 # Initialize ENVISIoN
 envisionMain = EnvisionMain()
 envisionMain.update()
-envisionMain.parse_ELK("CuFeS2", "testEMT.hdf5",["Unitcell"])
-#envisionMain.parse_vasp("TiPO4_bandstructure", "testEMT.hdf5",["Unitcell"])
+#envisionMain.parse_ELK("CuFeS2", "testEMT.hdf5",["Unitcell"])
+#envisionMain.parse_vasp("TiPO4_bandstructure", "testEMT.hdf5","All")
+
+#envisionMain.parse_vasp("Al_300K", "testEMT.hdf5",["Molecular dynamics"])
+envisionMain.parse_vasp("Al_300K", "testEMT.hdf5",["Force"])
 envisionMain.update()
 #send_request('init_manager', ['testEMT.hdf5'])
 #envisionMain.update()
@@ -59,14 +62,14 @@ envisionMain.update()
 # print("Deleting")
 # del envisionMain
 # print("Deleted")
-#while True:
+while True:
 #    envisionMain.update()
 #    send_request("visualisation_request", ["testEMT", "force", "hide_vectors"])
 #    envisionMain.update()
 #    time.sleep(1)
 #    send_request("visualisation_request", ["testEMT", "force", "show_vectors"])
 #    envisionMain.update()
-#    time.sleep(1)
+    time.sleep(1)
 # send_packet("status", ["envision started", True])
 
 # main()

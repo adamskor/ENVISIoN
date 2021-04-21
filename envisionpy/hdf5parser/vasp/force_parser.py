@@ -87,14 +87,17 @@ def _parse_forces(vasp_dir, get_vector_tips = False, coordinates = []):
         for n, line in enumerate(lines):
             if 'total drift' in line:
                 pos = n - 2
+                break
         for i, line in enumerate(lines):
             if 'POSITION' in line:
                 k = i + 1
+
                 while k < pos:
                     force = (re.findall(r'-?[\d.]+', lines[k + 1])[3:])
                     force = [float(x) for x in force]
                     forces.append(force)
                     k += 1
+                break
     if get_vector_tips:
         for i in range(len(forces)):
             list = [x + y for x, y in zip(coordinates[i], forces[i])]
