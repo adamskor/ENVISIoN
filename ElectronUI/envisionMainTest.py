@@ -2,6 +2,7 @@ import sys, os, inspect
 import time
 import select
 import json
+import PySimpleGUI as sg
 path_to_current_folder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 sys.path.append(path_to_current_folder + "/../")
 from envisionpy.EnvisionMain import EnvisionMain
@@ -51,9 +52,9 @@ send_request('start_visualisation', ['testEMT', 'moldyn'])
 #envisionMain.update()
 #envisionMain.update()
 #envisionMain.update()
-#while True:
+while True:
 #    time_start = time.time()
-#    envisionMain.update()
+   envisionMain.update()
 
 #     # Try to loop at 60 fps
 #    time_elapsed = time.time() - time_start
@@ -73,3 +74,6 @@ while True:
 # send_packet("status", ["envision started", True])
 
 # main()
+
+
+#parse("Cu_band_CUB", "test1234.hdf5",["Unitcell"])
