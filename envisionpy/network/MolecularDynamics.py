@@ -31,7 +31,7 @@ class MolecularDynamics(Decoration):
     def valid_hdf5(hdf5_file):
         #Test if the MD-section of the hdf5 file is empty.
         #Returns True if the MD-section of the hdf5 file is not empty.
-            return hdf5_file.get("MD") != None        #Kolla närmare på formatet för HDF5-filer. Detta verkar orsaka problem
+        return hdf5_file.get("MD") != None        #Kolla närmare på formatet för HDF5-filer. Detta verkar orsaka problem
 
     def get_ui_data(self):
         #Return a list of data to show on the user interface.
@@ -88,8 +88,17 @@ class MolecularDynamics(Decoration):
         else:
             sphereRenderer = self.get_processor('UnitcellRenderer')
             sphereRenderer.sphereProperties.defaultRadius.value = radius
-            for i in range(self.nAtomTypes):
-                self.atom_radii[i] = radius
+            print("____________________________________________________")
+            print(self.nAtomTypes)
+            print(self.atom_radii)
+            print(range(self.nAtomTypes))
+            counter = 0
+            while counter < self.nAtomTypes:
+                self.atom_radii += [radius]
+                counter += 1
+            #for i in range(self.nAtomTypes):
+            #    print(i)
+            #    self.atom_radii[i] += [radius]
 
     def hide_atoms(self):
         return self.set_atom_radius(0)

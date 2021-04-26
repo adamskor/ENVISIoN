@@ -57,7 +57,7 @@ class VisualisationManager():
             if ForceVectors.valid_hdf5(file):
                 self.available_visualisations.append("test")
             if MolecularDynamics.valid_hdf5(file):                           #MD
-                self.available_visualisations.append("molecular_dynamics")
+                self.available_visualisations.append("moldyn")
             if Test.valid_hdf5(file):
                 self.available_visualisations.append("force")
             #Det här behöver ändras från Test.valid_hdf5 till force.valid_hdf5
@@ -116,8 +116,8 @@ class VisualisationManager():
         # Initialize a new subnetwork
         #Här behöver vi ändra subnetwork = ForceVectors(...) till subnetwork = Animation(...)
         #Ändra animation till molecular_dynamics
-        if vis_type == "moldyn":
-            subnetwork = ForceVectors(self.app, self.hdf5_path, self.hdf5Output, 0, 3)
+        #if vis_type == "moldyn":
+        #    subnetwork = ForceVectors(self.app, self.hdf5_path, self.hdf5Output, 0, 3)
             #subnetwork = MolecularDynamics(self.app, self.hdf5_path, self.hdf5Output, 0, 3)
 
         elif vis_type == "charge":
@@ -129,7 +129,7 @@ class VisualisationManager():
         elif vis_type == "force":
             subnetwork = ForceVectors(self.app, self.hdf5_path, self.hdf5Output, 0, 3)
 
-        elif vis_type == "molecular_dynamics":                                              #MD
+        elif vis_type == "moldyn":                                              #MD
             subnetwork = MolecularDynamics(self.app, self.hdf5_path, self.hdf5Output, 0, 3)
 
         elif vis_type == "fermi":
