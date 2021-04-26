@@ -88,9 +88,6 @@ class MolecularDynamics(Decoration):
         else:
             sphereRenderer = self.get_processor('UnitcellRenderer')
             sphereRenderer.sphereProperties.defaultRadius.value = radius
-            print("____________________________________________________")
-            print(self.nAtomTypes)
-            print(self.atom_radii)
             print(range(self.nAtomTypes))
             counter = 0
             while counter < self.nAtomTypes:
@@ -164,15 +161,46 @@ class MolecularDynamics(Decoration):
                 # radius = atomic_radii.get(element, 0.5)
                 # self.atom_names.append(name)
                 # self.atom_radii.append(radius)
+                element = h5[MD_group + "/Atoms/0000/"+key].attrs['element']
+
+                name = element_names.get(element, 'Unknown')
+                color = element_colors.get(element, (0.5, 0.5, 0.5, 1.0))
+                radius = atomic_radii.get(element, 0.5)
+                self.atom_names.append(name)
+                self.atom_radii.append(radius)
+                y = list(color)
+                y[3] = 0.7
+                color = tuple(y)
+                coordReader = self.add_processor('envision.CoordinateReader', '{0} {1}'.format(0, key), xpos-i*7, ypos)
+                self.network.addConnection(hdf5_output, coordReader.getInport('inport'))
+                self.network.addConnection(coordReader.getOutport('outport'), strucMesh.getInport('coordinates'))
+                self.network.addLink(propertyAnimator.Int.value, coordReader.timestep)
+                coordReader.path.value = MD_group + '/Atoms/0000/' + key
+                if strucMesh.getPropertyByIdentifier('radius{0}'.format(i)) == None:
+                        continue
+
+                strucMesh_radius_property = strucMesh.getPropertyByIdentifier('radius{0}'.format(i))
+
+                strucMesh_radius_property.maxValue = 10
+                print(radius)
+                strucMesh_radius_property.value = radius/30
+                strucMesh_color_property = strucMesh.getPropertyByIdentifier('color{0}'.format(i))
+                strucMesh_color_property.value = inviwopy.glm.vec4(color[0],color[1],color[2],color[3])
+
+                strucMesh_atom_property = strucMesh.getPropertyByIdentifier('atoms{0}'.format(i))
+                strucMesh_atom_property.value = 0
+                strucMesh_atom_property.minValue = 0
+                strucMesh_atom_property.maxValue = 0
+
 
                 #Ersätt sträng i coordReader till variablen name när giltig name finns
-                coordReader = self.add_processor('envision.CoordinateReader', '{0} {1}'.format(0, key), xpos-i*7, ypos)
+            #    coordReader = self.add_processor('envision.CoordinateReader', '{0} {1}'.format(0, key), xpos-i*7, ypos)
                 self.network.addConnection(hdf5_output, coordReader.getInport('inport'))
                 self.network.addConnection(coordReader.getOutport('outport'), strucMesh.getInport('coordinates'))
                 self.network.addLink(propertyAnimator.Int.value, coordReader.timestep)
 
 
-                coordReader.path.value = MD_group + '/Atoms/0000/' + key
+            #    coordReader.path.value = MD_group + '/Atoms/0000/' + key
 
                                                                             #Osäker på vad fan detta block gör för något
                 # if strucMesh.getPropertyByIdentifier('radius{0}'.format(i)) == None:
